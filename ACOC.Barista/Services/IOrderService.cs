@@ -1,10 +1,11 @@
-﻿using ACOC.Barista.Models;
+﻿using ACOC.Barista.Contracts.http;
+using ACOC.Barista.Models;
 
 namespace ACOC.Barista.Services
 {
     public interface IOrderService
     {
-       Task<Order> Order(string type);
+       Task<Order> MakeOrder(MakeOrderDTO makeOrderDTO);
        Task HandleActiveOrders();
     }
 }

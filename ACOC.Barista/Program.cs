@@ -21,13 +21,10 @@ builder.Services.AddSingleton<IMongoClient>(s =>
 );
 
 builder.Services.AddAutoMapper(typeof(CustomerMappingProfile));
-
 builder.Services.AddTransient<IRepository<ProductTemplate>,ProductRepository>();
 builder.Services.AddTransient<IRepository<Order>,OrderRepository>();
 builder.Services.AddTransient<IOrderService,OrderService>();
 builder.Services.AddHostedService<LifeCycleEventService>();
-
-
 
 var app = builder.Build();
 

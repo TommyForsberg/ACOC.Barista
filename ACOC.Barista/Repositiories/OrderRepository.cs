@@ -27,8 +27,11 @@ namespace ACOC.Barista.Repositiories
         public async Task<Order?> GetAsync(string id) =>
             await _collection.Find(x => x.Id == id).FirstOrDefaultAsync();
 
-        public async Task CreateAsync(Order newProduct) =>
-            await _collection.InsertOneAsync(newProduct);
+        public async Task<string> CreateAsync(Order newOrder)
+        {
+            await _collection.InsertOneAsync(newOrder);
+            return newOrder.Id;
+        }
 
         public async Task UpdateAsync(string id, Order updatedProduct) =>
             await _collection.ReplaceOneAsync(x => x.Id == id, updatedProduct);

@@ -1,4 +1,6 @@
-﻿using ACOC.Barista.Models;
+﻿using ACOC.Barista.Contracts.http;
+using ACOC.Barista.Exceptions;
+using ACOC.Barista.Models;
 using ACOC.Barista.Repositiories;
 
 namespace ACOC.Barista.Services
@@ -13,20 +15,21 @@ namespace ACOC.Barista.Services
             this.productRepository = productRepository;
             this.orderRepository = orderRepository;
         }
-        public async Task<Order> Order(string type)
+        public async Task<Order> MakeOrder(MakeOrderDTO makeOrderDTO)
         {
-            var orderBluePrint = await productRepository.GetFirstOrDefaultByFilter(p => p.Name == type);
+            var orderBluePrint = await productRepository.GetAsync(makeOrderDTO.ProductId);
             if (orderBluePrint == null)
-                throw new InvalidOperationException();
+                throw new EntityNotFoundException($"No product template found with Id: ${makeOrderDTO.ProductId}");
 
             Order? order = new(orderBluePrint);
+            order.Product.State = makeOrderDTO.ActivateNow ? Models.Enums.LifeCycleState.Activated : Models.Enums.LifeCycleState.Created;
             await orderRepository.CreateAsync(order);
 
             return order;
         }
         public async Task HandleActiveOrders()
         {
-            var orders = await orderRepository.GetByFilter(o => o.Product.State == Models.Enums.LifeCycleState.Created);
+            var orders = await orderRepository.GetByFilter(o => o.Product.State == Models.Enums.LifeCycleState.Activated);
             foreach (var order in orders)
             {
                 order.Product.FutureEvents.ToList().ForEach(f =>

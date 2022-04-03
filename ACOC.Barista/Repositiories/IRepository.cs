@@ -9,7 +9,7 @@ namespace ACOC.Barista.Repositiories
         Task<T?> GetAsync(string id);
         Task<IEnumerable<T>> GetByFilter(Expression<Func<T, bool>> filter);
         Task<T> GetFirstOrDefaultByFilter(Expression<Func<T, bool>> filter);
-        Task CreateAsync(T newEntity);
+        Task<string> CreateAsync(T newEntity);
         Task UpdateAsync(string id, T updatedEntity);
         Task RemoveAsync(string id);
     }

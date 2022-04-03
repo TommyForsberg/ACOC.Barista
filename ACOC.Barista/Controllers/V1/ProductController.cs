@@ -24,14 +24,31 @@ namespace ACOC.Barista.Controllers
         [HttpGet(Name = "GetProducts"), ProducesResponseType(typeof(IEnumerable<Product>),200)]
         public async Task<IActionResult> Get()
         {
-            return Ok(await productRepository.GetAsync());
+            try
+            {
+                return Ok(await productRepository.GetAsync());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error when getting products");
+                throw;
+            }
+        
         }
         [HttpPost(Name = "PostProduct"), ProducesResponseType(200)]
         public async Task<IActionResult> Post(ProductTemplateDTO productTemplateDTO)
         {
-            var productTemplate = mapper.Map<ProductTemplate>(productTemplateDTO);
-            await productRepository.CreateAsync(productTemplate);
-            return Ok();
+            try
+            {
+                var productTemplate = mapper.Map<ProductTemplate>(productTemplateDTO);               
+                return Ok(await productRepository.CreateAsync(productTemplate));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex,"Error when posting producttemplate");
+                throw;
+            }
+      
         }
     }
 

@@ -1,4 +1,6 @@
-﻿using ACOC.Barista.Models;
+﻿using ACOC.Barista.Contracts.http;
+using ACOC.Barista.Exceptions;
+using ACOC.Barista.Models;
 using ACOC.Barista.Repositiories;
 using ACOC.Barista.Services;
 using Microsoft.AspNetCore.Http;
@@ -10,19 +12,35 @@ namespace ACOC.Barista.Controllers
     [ApiController]
     public class OrderController : ControllerBase
     {
+        private readonly ILogger<ProductController> logger;
         private readonly IOrderService orderService;
         private readonly IRepository<Order> orderRepository;
 
-        public OrderController(IOrderService orderService, IRepository<Order> orderRepository)
+        public OrderController(ILogger<ProductController> logger, IOrderService orderService, IRepository<Order> orderRepository)
         {
+            this.logger = logger;
             this.orderService = orderService;
             this.orderRepository = orderRepository;
         }
-        [HttpGet(Name = "Order"), ProducesResponseType(typeof(IEnumerable<Order>), 200)]
-        public async  Task<IActionResult> Get([FromQuery] string type)
+        [HttpPost(Name = "Order"), ProducesResponseType(typeof(IEnumerable<Order>), 200)]
+        public async  Task<IActionResult> Post(MakeOrderDTO makeOrderDTO)
         {
-            Order order = await orderService.Order(type);
-            return  Ok(order);
+            try
+            {
+                Order order = await orderService.MakeOrder(makeOrderDTO);
+                return Ok(order);
+            }
+            catch(EntityNotFoundException ex)
+            {
+                logger.LogWarning(exception: ex, "Could not make order");
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex,"Error when posting product template");
+                throw;        
+            }
+           
         }
 
         [HttpGet("{friendlyUID}/peek"), ProducesResponseType(typeof(IEnumerable<Order>), 200)]

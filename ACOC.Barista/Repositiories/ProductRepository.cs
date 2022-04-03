@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace ACOC.Barista.Repositiories
 {
-    public class ProductRepository: IRepository<ProductTemplate>
+    public class ProductRepository : IRepository<ProductTemplate>
     {
         private readonly IMongoCollection<ProductTemplate> _productCollection;
 
@@ -28,8 +28,11 @@ namespace ACOC.Barista.Repositiories
             await _productCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
         public async Task<ProductTemplate?> GetByNameAsync(string name) =>
         await _productCollection.Find(x => x.Name == name).FirstOrDefaultAsync();
-        public async Task CreateAsync(ProductTemplate newProduct) =>
+
+        public async Task<string> CreateAsync(ProductTemplate newProduct) {
             await _productCollection.InsertOneAsync(newProduct);
+            return newProduct.Id;
+    }
 
         public async Task UpdateAsync(string id, ProductTemplate updatedProduct) =>
             await _productCollection.ReplaceOneAsync(x => x.Id == id, updatedProduct);
