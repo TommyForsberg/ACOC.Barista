@@ -11,13 +11,12 @@ namespace ACOC.Barista.Models
             Name = orderBluePrint.Name; 
             State = LifeCycleState.Created;
             FutureEvents = orderBluePrint.FutureEvents.Select(e => new LifeCycleEvent(e, dateTime)).ToList();
-            Category = orderBluePrint.Category; 
             Type = orderBluePrint.Type;
         }
  
         [BsonRepresentation(BsonType.String)]
         public LifeCycleState State { get; set; }
-        public virtual ICollection<LifeCycleEvent> Events { get; set; } = null!;
+        public virtual ICollection<LifeCycleEvent> Events { get; set; } = new List<LifeCycleEvent>();
     }
 
 }

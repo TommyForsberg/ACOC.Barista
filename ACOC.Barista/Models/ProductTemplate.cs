@@ -8,15 +8,11 @@ namespace ACOC.Barista.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string? Id { get; set; }
+        public string Id { get; set; } = null!;
 
-        [BsonElement("Name")]
         public string Name { get; set; } = null!;
 
-        public string? Category { get; set; }
-
-        [BsonRepresentation(BsonType.String)]
-        public ProductType Type { get; set; }
+        public string? Type { get; set; }
 
         public virtual ICollection<LifeCycleEvent> FutureEvents { get; set; } = null!;
     }

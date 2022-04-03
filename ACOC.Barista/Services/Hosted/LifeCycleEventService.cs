@@ -21,16 +21,15 @@
                 {
                     using var scope = serviceProvider.CreateScope();
 
-                    //var paymentService = scope.ServiceProvider.GetRequiredService<IPaymentService>();
-
-                    //await paymentService.ProcessIncompletedPayments(stoppingToken);
+                    var orderService= scope.ServiceProvider.GetRequiredService<IOrderService>();
+                    await orderService.HandleActiveOrders();
                 }
                 catch (Exception e)
                 {
                     logger.LogError(e, e.Message);
                 }
 
-                await Task.Delay(TimeSpan.FromSeconds(60), stoppingToken);
+                await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
             }
         }
     }

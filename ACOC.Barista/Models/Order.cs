@@ -11,11 +11,12 @@ namespace ACOC.Barista.Models
             Product = new Product(orderBluePrint, OrderDateTime);
             FriendlyUUID = Guid.NewGuid().ToString();
 
+
         }
 
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string? Id { get; set; }
+        public string Id { get; set; } = null!;
         public string FriendlyUUID { get; set; }
         public Product Product { get; set; }
         public DateTime OrderDateTime { get; set; }
