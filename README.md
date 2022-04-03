@@ -9,4 +9,4 @@ This is the barista-api. An administrator can configure products in a database. 
 The heart of the barista is the servicebus. Every cup of coffee has a set of freely configured events wich all will trigger at a configured timespan. Every order holds a webhook-callback address wich will be posted to when the events are triggered. 
 
 <h3>Key concepts</h3>
-.NET 6, OpenApi, Swagger, MongoDb, Azure Servicebus, Azure Logical Apps. 
+.NET 6, OpenApi, Swagger, MongoDb, Azure Servicebus, Azure Logical Apps
