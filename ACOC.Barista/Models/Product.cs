@@ -12,6 +12,7 @@ namespace ACOC.Barista.Models
             State = LifeCycleState.Created;
             FutureEvents = orderBluePrint.FutureEvents.Select(e => new LifeCycleEvent(e, dateTime)).ToList();
             Type = orderBluePrint.Type;
+            Description = orderBluePrint.Description;
         }
  
         [BsonRepresentation(BsonType.String)]

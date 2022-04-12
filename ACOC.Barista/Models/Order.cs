@@ -7,11 +7,10 @@ namespace ACOC.Barista.Models
     {
         public Order(ProductTemplate orderBluePrint)
         {
-            OrderDateTime = DateTime.Now;
+            OrderDateTime = DateTime.UtcNow;
             Product = new Product(orderBluePrint, OrderDateTime);
             FriendlyUUID = Guid.NewGuid().ToString();
-
-
+            ReadyDateTime = DateTime.UtcNow.AddMinutes(5);
         }
 
         [BsonId]
@@ -20,6 +19,7 @@ namespace ACOC.Barista.Models
         public string FriendlyUUID { get; set; }
         public Product Product { get; set; }
         public DateTime OrderDateTime { get; set; }
+        public DateTime ReadyDateTime { get; set; }
         public string? Webhook { get; set; }
     }
 }

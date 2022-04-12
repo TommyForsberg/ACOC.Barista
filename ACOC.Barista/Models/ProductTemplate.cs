@@ -13,6 +13,8 @@ namespace ACOC.Barista.Models
         public string Name { get; set; } = null!;
 
         public string? Type { get; set; }
+        public string? Description { get; set; }
+        public string? ImageUrl { get; set; }
 
         public virtual ICollection<LifeCycleEvent> FutureEvents { get; set; } = null!;
     }

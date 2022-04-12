@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace ACOC.Barista.Controllers
 {
     [ApiController]
-    [Route("api/v1/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("1.0")]
     public class ProductController : ControllerBase
     {
         private readonly ILogger<ProductController> _logger;

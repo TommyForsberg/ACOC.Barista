@@ -4,6 +4,7 @@
     {
         Created = 0,
         Activated,
-        Consumed
+        Consumed,
+        Disposed
     }
 }

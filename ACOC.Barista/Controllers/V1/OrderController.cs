@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ACOC.Barista.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("1.0")]
     [ApiController]
     public class OrderController : ControllerBase
     {
@@ -43,16 +44,19 @@ namespace ACOC.Barista.Controllers
            
         }
 
-        [HttpGet("{friendlyUID}/peek"), ProducesResponseType(typeof(IEnumerable<Order>), 200)]
-        public async Task<IActionResult> Peek(string friendlyUID)
+        [HttpGet("/{id}/peek"), ProducesResponseType(typeof(IEnumerable<Order>), 200)]
+        public async Task<IActionResult> Peek(string id)
         {
-            var order = await orderRepository.GetFirstOrDefaultByFilter(r => r.FriendlyUUID == friendlyUID);
+            var order = await orderRepository.GetAsync(id);
             return Ok(order);
         }
-        //[HttpGet(Name = "Order/{friendlyUID}/consume"), ProducesResponseType(typeof(IEnumerable<Order>), 200)]
-        //public IActionResult Consume(string friendlyUID)
-        //{
-        //    return Ok();
-        //}
+        [HttpGet(Name = "{friendlyUUID}/consume"), ProducesResponseType(typeof(IEnumerable<Order>), 200)]
+        public async Task<IActionResult> Consume(string friendlyUUID)
+        {
+            var order = await orderRepository.GetFirstOrDefaultByFilter(o => o.FriendlyUUID == friendlyUUID);
+            order.Product.State = Models.Enums.LifeCycleState.Consumed;
+            await orderRepository.UpdateAsync(order.Id, order);
+            return Ok();
+        }
     }
 }
