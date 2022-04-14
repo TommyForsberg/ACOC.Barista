@@ -13,6 +13,8 @@ namespace ACOC.Barista.Models
             FutureEvents = orderBluePrint.FutureEvents.Select(e => new LifeCycleEvent(e, dateTime)).ToList();
             Type = orderBluePrint.Type;
             Description = orderBluePrint.Description;
+            Id = orderBluePrint.Id;
+            ImageUrl = orderBluePrint.ImageUrl;
         }
  
         [BsonRepresentation(BsonType.String)]
